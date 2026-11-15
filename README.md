@@ -1,1 +1,3 @@
-"# My Project" 
+﻿# CampusActivity
+
+Campus activity management system.
