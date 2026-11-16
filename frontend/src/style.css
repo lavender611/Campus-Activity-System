@@ -1,0 +1,68 @@
+/* 全局基础样式：覆盖 Vite 模板默认值，沿用 Element Plus 设计语言 */
+:root {
+  --bg: #f2f5f9;
+  --surface: #ffffff;
+  --ink: #1c2733;
+  --ink-2: #4a5866;
+  --ink-3: #8291a0;
+  --line: #dfe6ee;
+  --radius: 12px;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: "Helvetica Neue", Helvetica, "PingFang SC", "Microsoft YaHei",
+    "Noto Sans SC", Arial, sans-serif;
+  background: var(--bg);
+  color: var(--ink);
+  line-height: 1.55;
+}
+
+#app {
+  min-height: 100vh;
+}
+
+/* 页面通用容器 */
+.page-wrap {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 24px;
+}
+
+.page-head {
+  margin-bottom: 18px;
+}
+
+.page-head h2 {
+  font-size: 21px;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+
+.page-head p {
+  color: var(--ink-3);
+  font-size: 13px;
+  margin: 0;
+}
+
+/* 卡片间距 */
+.gap-grid {
+  display: grid;
+  gap: 16px;
+}
+
+/* 窄屏适配 */
+@media (max-width: 768px) {
+  .page-wrap {
+    padding: 16px;
+  }
+}
