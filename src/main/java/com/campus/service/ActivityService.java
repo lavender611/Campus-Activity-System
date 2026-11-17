@@ -16,8 +16,13 @@ public class ActivityService {
         this.activityMapper = activityMapper;
     }
 
-    // 查询所有校园活动
+    // 查询全部活动
     public List<Activity> findAll() {
         return activityMapper.findAll();
+    }
+
+    // 根据 ID 查询活动
+    public Activity findById(Integer id) {
+        return activityMapper.findById(id);
     }
 }

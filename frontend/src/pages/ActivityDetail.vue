@@ -1,181 +1,374 @@
+
 <script setup>
-import { computed } from 'vue'
-import { useRouter, useRoute } from 'vue-router'
+import { ref, computed, onMounted } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import { ACTIVITIES, state, activityStatus } from '../store'
 
-const router = useRouter()
 const route = useRoute()
+const router = useRouter()
 
-const activity = computed(() => {
-  const id = Number(route.params.id)
-  return ACTIVITIES.find((x) => x.id === id) || ACTIVITIES[0]
+const activity = ref(null)
+const signed = ref(0)
+const hasRegistered = ref(false)
+const loading = ref(false)
+const submitting = ref(false)
+const errorMessage = ref('')
+
+// 当前测试用户 ID
+const userId = 1
+
+// 剩余名额
+const remaining = computed(() => {
+  if (!activity.value) return 0
+  return Math.max(0, activity.value.capacity - signed.value)
 })
 
-const remain = computed(() => activity.value.capacity - activity.value.signed)
-const pct = computed(() =>
-  Math.min(100, Math.round((activity.value.signed / activity.value.capacity) * 100))
-)
-const signed = computed(() => state.mySignups.some((s) => s.activityId === activity.value.id))
-const fav = computed(() => state.favorites.includes(activity.value.id))
+// 获取活动详情
+async function loadActivity() {
+  loading.value = true
+  errorMessage.value = ''
 
-function toggleFav() {
-  const idx = state.favorites.indexOf(activity.value.id)
-  if (idx >= 0) {
-    state.favorites.splice(idx, 1)
-    ElMessage.info('已取消收藏')
-  } else {
-    state.favorites.push(activity.value.id)
-    ElMessage.success('已加入收藏')
-  }
-}
-
-function signup() {
-  if (state.role === '游客') {
-    ElMessage.warning('请先登录后再报名')
-    router.push({ name: 'login' })
-    return
-  }
-  if (signed.value) {
-    ElMessage.info('你已报名该活动')
-    return
-  }
-  if (activity.value.signed >= activity.value.capacity) {
-    ElMessage.warning('名额已满，无法报名')
-    return
-  }
-  const now = new Date()
-  const pad = (n) => String(n).padStart(2, '0')
-  const signupAt = `${now.getFullYear()}-${pad(now.getMonth() + 1)}-${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}`
-  state.mySignups.push({ activityId: activity.value.id, signupAt, status: '已报名' })
-  activity.value.signed += 1
-  ElMessage.success('报名成功，可在「我的报名」中查看')
-}
-
-async function cancelSignup() {
   try {
-    await ElMessageBox.confirm('确定要取消该活动的报名吗？取消后名额将释放给其他同学。', '取消报名', {
-      type: 'warning',
-      confirmButtonText: '确认取消',
-      cancelButtonText: '再想想'
-    })
-    state.mySignups = state.mySignups.filter((s) => s.activityId !== activity.value.id)
-    if (activity.value.signed > 0) activity.value.signed -= 1
-    ElMessage.success('已取消报名，名额已释放')
-  } catch {
-    // 用户取消弹窗，不处理
+    const id = route.params.id
+
+    const response = await fetch(
+        `http://localhost:8080/api/activities/${id}`
+    )
+
+    if (!response.ok) {
+      throw new Error('活动查询失败，状态码：' + response.status)
+    }
+
+    const data = await response.json()
+
+    activity.value = {
+      id: data.id,
+      title: data.title,
+      description: data.description,
+      location: data.location,
+      startTime: data.startTime,
+      endTime: data.endTime,
+      capacity: data.capacity,
+      status: data.status,
+      organizer: '校园活动主办方'
+    }
+
+    await loadRegistrationInfo(id)
+
+  } catch (error) {
+    console.error('获取活动详情失败：', error)
+    errorMessage.value = '活动详情加载失败，请检查后端接口'
+  } finally {
+    loading.value = false
   }
 }
+
+// 获取报名人数和当前用户报名状态
+async function loadRegistrationInfo(id) {
+  try {
+    const countResponse = await fetch(
+        `http://localhost:8080/api/registrations/count/${id}`
+    )
+
+    if (!countResponse.ok) {
+      throw new Error('报名人数查询失败')
+    }
+
+    signed.value = Number(await countResponse.json())
+
+    const listResponse = await fetch(
+        'http://localhost:8080/api/registrations'
+    )
+
+    if (!listResponse.ok) {
+      throw new Error('报名记录查询失败')
+    }
+
+    const registrations = await listResponse.json()
+
+    hasRegistered.value = registrations.some(item =>
+        Number(item.userId) === userId &&
+        Number(item.activityId) === Number(id) &&
+        item.status === 'REGISTERED'
+    )
+
+  } catch (error) {
+    console.error('获取报名信息失败：', error)
+    ElMessage.error('报名信息加载失败')
+  }
+}
+
+// 提交报名
+async function registerActivity() {
+  if (!activity.value) return
+
+  if (remaining.value <= 0) {
+    ElMessage.warning('活动名额已满')
+    return
+  }
+
+  try {
+    await ElMessageBox.confirm(
+        `确定报名参加“${activity.value.title}”吗？`,
+        '报名确认',
+        {
+          confirmButtonText: '确认报名',
+          cancelButtonText: '暂不报名',
+          type: 'info'
+        }
+    )
+
+    submitting.value = true
+
+    const response = await fetch(
+        'http://localhost:8080/api/registrations',
+        {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            userId: userId,
+            activityId: activity.value.id
+          })
+        }
+    )
+
+    if (!response.ok) {
+      throw new Error('报名请求失败')
+    }
+
+    const result = await response.json()
+
+    if (result.success) {
+      ElMessage.success('报名成功！')
+      await loadRegistrationInfo(activity.value.id)
+    } else {
+      ElMessage.warning(result.message || '报名失败')
+    }
+
+  } catch (error) {
+    if (error !== 'cancel') {
+      console.error('报名失败：', error)
+      ElMessage.error('报名请求失败，请检查后端')
+    }
+  } finally {
+    submitting.value = false
+  }
+}
+
+// 取消报名
+async function cancelActivity() {
+  if (!activity.value) return
+
+  try {
+    await ElMessageBox.confirm(
+        `确定取消“${activity.value.title}”的报名吗？`,
+        '取消报名确认',
+        {
+          confirmButtonText: '确认取消',
+          cancelButtonText: '暂不取消',
+          type: 'warning'
+        }
+    )
+
+    submitting.value = true
+
+    const response = await fetch(
+        `http://localhost:8080/api/registrations/cancel/${userId}/${activity.value.id}`,
+        {
+          method: 'PUT'
+        }
+    )
+
+    if (!response.ok) {
+      throw new Error('取消报名请求失败')
+    }
+
+    const result = await response.json()
+
+    if (result.success) {
+      ElMessage.success('取消报名成功')
+      await loadRegistrationInfo(activity.value.id)
+    } else {
+      ElMessage.warning(result.message || '取消报名失败')
+    }
+
+  } catch (error) {
+    if (error !== 'cancel') {
+      console.error('取消报名失败：', error)
+      ElMessage.error('取消报名请求失败，请检查后端')
+    }
+  } finally {
+    submitting.value = false
+  }
+}
+
+// 格式化时间
+function formatTime(time) {
+  if (!time) return '暂未填写'
+  return String(time).replace('T', ' ').slice(0, 16)
+}
+
+onMounted(() => {
+  loadActivity()
+})
 </script>
 
 <template>
-  <div class="page-wrap">
-    <el-breadcrumb separator="/" class="crumb">
-      <el-breadcrumb-item><router-link :to="{ name: 'list' }">返回列表</router-link></el-breadcrumb-item>
-      <el-breadcrumb-item>活动详情</el-breadcrumb-item>
-    </el-breadcrumb>
+  <div class="detail-page">
+    <el-button @click="router.back()" class="back-button">
+      返回活动列表
+    </el-button>
 
-    <div class="detail-grid">
-      <el-card class="detail-main">
-        <el-tag effect="plain">{{ activity.category }}</el-tag>
-        <h2 class="detail-title">{{ activity.title }}</h2>
-        <div class="detail-meta">
-          <div class="meta-line"><el-icon><OfficeBuilding /></el-icon>主办方：{{ activity.organizer }}</div>
-          <div class="meta-line"><el-icon><Clock /></el-icon>时间：{{ activity.startAt }}</div>
-          <div class="meta-line"><el-icon><Location /></el-icon>地点：{{ activity.location }}</div>
-        </div>
-        <div class="detail-desc">{{ activity.desc }}</div>
-      </el-card>
-
-      <el-card class="detail-side">
-        <div class="side-block">
-          <div class="side-label">报名状态</div>
-          <el-tag :type="activityStatus(activity).type" effect="light">{{ activityStatus(activity).text }}</el-tag>
-        </div>
-        <div class="side-block">
-          <div class="side-label">名额余量</div>
-          <div class="side-value">剩余 {{ remain }} / {{ activity.capacity }} 人</div>
-          <el-progress :percentage="pct" :stroke-width="8" class="quota-bar" />
-        </div>
-        <div class="detail-actions">
-          <el-button :type="fav ? 'success' : 'default'" plain @click="toggleFav">
-            {{ fav ? '已收藏' : '收藏活动' }}
-          </el-button>
-          <el-button v-if="!signed" type="primary" size="large" @click="signup">立即报名</el-button>
-          <el-button v-else size="large" @click="cancelSignup">取消报名</el-button>
-        </div>
-      </el-card>
+    <div v-if="loading" class="message">
+      正在加载活动详情...
     </div>
+
+    <el-empty
+        v-else-if="errorMessage"
+        :description="errorMessage"
+    />
+
+    <el-card v-else-if="activity" class="detail-card">
+      <div class="detail-header">
+        <h2>{{ activity.title }}</h2>
+        <el-tag type="success">
+          {{ activity.status === 'ACTIVE' ? '报名中' : activity.status }}
+        </el-tag>
+      </div>
+
+      <el-divider />
+
+      <div class="detail-item">
+        <span class="label">活动主办方：</span>
+        <span>{{ activity.organizer }}</span>
+      </div>
+
+      <div class="detail-item">
+        <span class="label">活动地点：</span>
+        <span>{{ activity.location || '暂未填写' }}</span>
+      </div>
+
+      <div class="detail-item">
+        <span class="label">开始时间：</span>
+        <span>{{ formatTime(activity.startTime) }}</span>
+      </div>
+
+      <div class="detail-item">
+        <span class="label">结束时间：</span>
+        <span>{{ formatTime(activity.endTime) }}</span>
+      </div>
+
+      <div class="detail-item">
+        <span class="label">活动人数上限：</span>
+        <span>{{ activity.capacity }} 人</span>
+      </div>
+
+      <div class="detail-item">
+        <span class="label">已报名人数：</span>
+        <span>{{ signed }} 人</span>
+      </div>
+
+      <div class="detail-item">
+        <span class="label">剩余名额：</span>
+        <span>{{ remaining }} 人</span>
+      </div>
+
+      <el-progress
+          :percentage="activity.capacity > 0
+          ? Math.min(100, Math.round(signed / activity.capacity * 100))
+          : 0"
+          :stroke-width="12"
+      />
+
+      <el-divider />
+
+      <h3>活动介绍</h3>
+
+      <p class="description">
+        {{ activity.description || '暂无活动介绍' }}
+      </p >
+
+      <el-button
+          v-if="!hasRegistered"
+          type="primary"
+          size="large"
+          class="register-button"
+          :loading="submitting"
+          :disabled="remaining <= 0 || activity.status !== 'ACTIVE'"
+          @click="registerActivity"
+      >
+        {{ remaining <= 0 ? '名额已满' : '立即报名' }}
+      </el-button>
+
+      <el-button
+          v-else
+          type="danger"
+          size="large"
+          class="register-button"
+          :loading="submitting"
+          @click="cancelActivity"
+      >
+        取消报名
+      </el-button>
+
+    </el-card>
   </div>
 </template>
 
 <style scoped>
-.crumb {
-  margin-bottom: 12px;
+.detail-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px;
 }
-.detail-grid {
-  display: grid;
-  grid-template-columns: 1.6fr 1fr;
-  gap: 20px;
-}
-.detail-title {
-  font-size: 22px;
-  font-weight: 700;
-  margin: 10px 0 12px;
-}
-.detail-meta {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  font-size: 14px;
-  color: var(--ink-2);
-}
-.meta-line {
-  display: flex;
-  gap: 8px;
-  align-items: center;
-}
-.meta-line .el-icon {
-  color: var(--ink-3);
-}
-.detail-desc {
-  margin-top: 18px;
-  padding-top: 18px;
-  border-top: 1px solid #edf1f6;
-  font-size: 14px;
-  color: var(--ink-2);
-  white-space: pre-line;
-}
-.side-block {
+.back-button {
   margin-bottom: 18px;
 }
-.side-block:last-child {
-  margin-bottom: 0;
+
+.detail-card {
+  border-radius: 12px;
 }
-.side-label {
-  font-size: 12px;
-  color: var(--ink-3);
-  margin-bottom: 6px;
-}
-.side-value {
-  font-size: 16px;
-  font-weight: 600;
-}
-.quota-bar {
-  margin-top: 8px;
-}
-.detail-actions {
+
+.detail-header {
   display: flex;
-  flex-direction: column;
-  gap: 10px;
-  margin-top: 18px;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
 }
-.detail-actions .el-button {
+
+.detail-header h2 {
+  margin: 0;
+  font-size: 23px;
+  color: var(--ink, #303133);
+}
+
+.detail-item {
+  display: flex;
+  margin: 18px 0;
+  font-size: 15px;
+  line-height: 1.6;
+}
+
+.label {
+  width: 130px;
+  flex-shrink: 0;
+  color: var(--ink-2, #606266);
+}
+
+.description {
+  line-height: 1.9;
+  white-space: pre-wrap;
+  color: var(--ink-2, #606266);
+}
+.message {
+  padding: 40px;
+  text-align: center;
+}
+
+.register-button {
   width: 100%;
-}
-@media (max-width: 768px) {
-  .detail-grid {
-    grid-template-columns: 1fr;
-  }
+  margin-top: 24px;
 }
 </style>

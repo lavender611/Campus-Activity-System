@@ -1,0 +1,22 @@
+### 测试校园迎新活动报名
+POST http://localhost:8080/api/registrations
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "activityId": 2
+}
+### 测试取消报名
+PUT http://localhost:8080/api/registrations/cancel/1/2
+### 测试取消后重新报名
+POST http://localhost:8080/api/registrations
+Content-Type: application/json
+
+{
+  "userId": 1,
+  "activityId": 2
+}
+### 查询用户1的个人报名记录
+GET http://localhost:8080/api/registrations/user/1
+### 查询用户1的个人报名记录
+GET http://localhost:8080/api/registrations/user/1
