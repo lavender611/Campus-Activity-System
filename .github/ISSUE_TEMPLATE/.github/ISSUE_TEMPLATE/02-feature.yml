@@ -1,0 +1,17 @@
+name: 功能 / 工程变更
+description: 提交一个可独立关闭的变更
+title: ""
+labels: ["enhancement"]
+body:
+  - type: textarea
+    id: outcome
+    attributes:
+      label: 完成标准（Done 的定义）
+      description: 写清楚“做到什么程度算完成”，而不是“做什么”
+    validations:
+      required: true
+  - type: textarea
+    id: notes
+    attributes:
+      label: 技术备注 / 约束
+      render: markdown
