@@ -14,6 +14,8 @@ param(
 
 $ErrorActionPreference = 'Stop'
 $root = $PSScriptRoot
+# 保证在任意目录调用本脚本都能正确找到 pytest.ini 与 tests/
+Set-Location $root
 $venv = Join-Path $root '.venv'
 $python = Join-Path $venv 'Scripts\python.exe'
 
