@@ -1,40 +1,27 @@
-target/
-!.mvn/wrapper/maven-wrapper.jar
-!**/src/main/**/target/
-!**/src/test/**/target/
-.kotlin
+# ---- Java / Maven ----
+backend/target/
+*.class
+*.jar
+*.war
 
-### IntelliJ IDEA ###
-.idea/modules.xml
-.idea/jarRepositories.xml
-.idea/compiler.xml
-.idea/libraries/
-*.iws
-*.iml
-*.ipr
+# ---- Node / Vite ----
+frontend/node_modules/
+frontend/dist/
+npm-debug.log*
+pnpm-debug.log*
+yarn-error.log*
 
-### Eclipse ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
-### NetBeans ###
-/nbproject/private/
-/nbbuild/
-/dist/
-/nbdist/
-/.nb-gradle/
-build/
-!**/src/main/**/build/
-!**/src/test/**/build/
-
-### VS Code ###
-.vscode/
-
-### Mac OS ###
-.DS_Store
+# ---- IDE ----
 .idea/
+*.iml
+out/
+
+# ---- OS ----
+.DS_Store
+Thumbs.db
+
+# ---- logs ----
+*.log
+
+# ---- 本地数据库备份（不入库） ----
+database/backup_*.sql

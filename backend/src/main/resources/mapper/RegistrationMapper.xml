@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.campus.mapper.RegistrationMapper">
+    <sql id="registrationColumns">
+        r.id, r.user_id AS userId, r.activity_id AS activityId,
+        r.registration_time AS registrationTime, r.status,
+        u.username, a.title AS activityTitle, a.location AS activityLocation,
+        a.start_time AS activityStartTime, a.end_time AS activityEndTime
+    </sql>
+    <select id="findAll" resultType="com.campus.entity.Registration">
+        SELECT <include refid="registrationColumns"/>
+        FROM registrations r JOIN users u ON u.id=r.user_id
+        JOIN activities a ON a.id=r.activity_id
+        ORDER BY r.registration_time DESC
+    </select>
+    <select id="findByUserId" resultType="com.campus.entity.Registration">
+        SELECT <include refid="registrationColumns"/>
+        FROM registrations r JOIN users u ON u.id=r.user_id
+        JOIN activities a ON a.id=r.activity_id
+        WHERE r.user_id=#{userId}
+        ORDER BY r.registration_time DESC
+    </select>
+    <select id="findByActivityId" resultType="com.campus.entity.Registration">
+        SELECT <include refid="registrationColumns"/>
+        FROM registrations r JOIN users u ON u.id=r.user_id
+        JOIN activities a ON a.id=r.activity_id
+        WHERE r.activity_id=#{activityId}
+        ORDER BY r.registration_time DESC
+    </select>
+    <select id="findOne" resultType="com.campus.entity.Registration">
+        SELECT * FROM registrations WHERE user_id=#{userId} AND activity_id=#{activityId}
+    </select>
+    <select id="countRegistered" resultType="int">
+        SELECT COUNT(*) FROM registrations
+        WHERE activity_id=#{activityId} AND status='REGISTERED'
+    </select>
+    <insert id="insert">
+        INSERT INTO registrations(user_id, activity_id, status)
+        VALUES(#{userId}, #{activityId}, 'REGISTERED')
+        ON DUPLICATE KEY UPDATE status='REGISTERED', registration_time=CURRENT_TIMESTAMP
+    </insert>
+    <update id="cancel">
+        UPDATE registrations SET status='CANCELLED'
+        WHERE user_id=#{userId} AND activity_id=#{activityId} AND status='REGISTERED'
+    </update>
+    <delete id="deleteByActivityId">
+        DELETE FROM registrations WHERE activity_id=#{activityId}
+    </delete>
+</mapper>

@@ -1,20 +1,7 @@
 import { createApp } from 'vue'
 import ElementPlus from 'element-plus'
 import 'element-plus/dist/index.css'
-import zhCn from 'element-plus/es/locale/lang/zh-cn'
-import * as ElementPlusIconsVue from '@element-plus/icons-vue'
-
 import './style.css'
 import App from './App.vue'
 import router from './router'
-
-const app = createApp(App)
-
-// 全量注册 Element Plus 图标组件（原型阶段便于直接使用）
-for (const [name, component] of Object.entries(ElementPlusIconsVue)) {
-  app.component(name, component)
-}
-
-app.use(router)
-app.use(ElementPlus, { locale: zhCn })
-app.mount('#app')
+createApp(App).use(ElementPlus).use(router).mount('#app')
