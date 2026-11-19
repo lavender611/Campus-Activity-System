@@ -98,5 +98,32 @@ npm run dev
 > `{ "success": false, "message": "中文提示" }`，前端会直接弹出该提示，
 > 不会再只显示一个空白 500 页面。
 
+## 六、Python 接口自动化测试
+
+测试代码在 `python-tests/`，基于 **pytest + requests**，共 65 个用例，覆盖登录、活动增删改查、
+报名/取消、参数校验和 CORS。
+
+```powershell
+cd python-tests
+.\run_tests.ps1              # 一键安装依赖并运行（Windows）
+```
+
+```bash
+cd python-tests
+./run_tests.sh               # macOS / Linux / Git Bash
+```
+
+测试框架会**自动探活**：8080 已有后端就直接复用，没有就启动 `backend/target` 下的 jar
+（跑完自动关闭）。所以运行前请先构建一次：
+
+```bash
+mvn -f backend/pom.xml -DskipTests package
+```
+
+`mysql` 需已导入 `database/campus_activity.sql`。用例自建活动并在结束时删除，
+不会污染演示数据。HTML 报告输出到 `python-tests/reports/report.html`。
+
+详细说明见 [python-tests/README.md](python-tests/README.md)。
+
 ## 说明
 这是课程演示项目。当前登录采用明文密码比对，前端 localStorage 中的角色和用户 ID 不能作为生产环境身份认证。正式部署应改用 BCrypt、Spring Security、JWT/Session 和服务端权限校验。

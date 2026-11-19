@@ -23,5 +23,12 @@ Thumbs.db
 # ---- logs ----
 *.log
 
+# ---- Python 自动化测试 ----
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+python-tests/reports/
+
 # ---- 本地数据库备份（不入库） ----
 database/backup_*.sql
