@@ -4,7 +4,20 @@ const KEY = 'campusDemoData'
 const USERS = [
   { id: 1, username: 'student01', password: '123456', role: 'STUDENT' },
   { id: 2, username: 'student02', password: '123456', role: 'STUDENT' },
-  { id: 3, username: 'admin', password: '123456', role: 'ADMIN' }
+  { id: 3, username: 'admin', password: '123456', role: 'ADMIN' },
+  // 2026-2027-1 学期重补修名单学生（用户名=姓名，密码 123456）
+  { id: 4, username: '段浩宇', password: '123456', role: 'STUDENT' },
+  { id: 5, username: '胡雨生', password: '123456', role: 'STUDENT' },
+  { id: 6, username: '吴钰琳', password: '123456', role: 'STUDENT' },
+  { id: 7, username: '张战', password: '123456', role: 'STUDENT' },
+  { id: 8, username: '韦涵烁', password: '123456', role: 'STUDENT' },
+  { id: 9, username: '韩旭', password: '123456', role: 'STUDENT' },
+  { id: 10, username: '余邵卿', password: '123456', role: 'STUDENT' },
+  { id: 11, username: '赵齐文', password: '123456', role: 'STUDENT' },
+  { id: 12, username: '王彤', password: '123456', role: 'STUDENT' },
+  { id: 13, username: '邓翼枫', password: '123456', role: 'STUDENT' },
+  { id: 14, username: '陈娜', password: '123456', role: 'STUDENT' },
+  { id: 15, username: '杨珺涵', password: '123456', role: 'STUDENT' }
 ]
 
 function seedActivities() {
@@ -114,9 +127,32 @@ function seedActivities() {
 }
 
 function seedRegistrations() {
+  // 重补修名单学生的报名记录：每人 2 项 11 月社团活动（与数据库 seed 一致）
   return [
-    { id: 1, userId: 1, activityId: 190, registrationTime: '2026-11-18T10:22:00', status: 'REGISTERED' },
-    { id: 2, userId: 2, activityId: 191, registrationTime: '2026-11-19T15:41:00', status: 'REGISTERED' }
+    { id: 1, userId: 4, activityId: 190, registrationTime: '2026-11-20T09:12:00', status: 'REGISTERED' },
+    { id: 2, userId: 4, activityId: 191, registrationTime: '2026-11-20T09:14:00', status: 'REGISTERED' },
+    { id: 3, userId: 5, activityId: 192, registrationTime: '2026-11-20T09:20:00', status: 'REGISTERED' },
+    { id: 4, userId: 5, activityId: 193, registrationTime: '2026-11-20T09:22:00', status: 'REGISTERED' },
+    { id: 5, userId: 6, activityId: 194, registrationTime: '2026-11-20T09:31:00', status: 'REGISTERED' },
+    { id: 6, userId: 6, activityId: 196, registrationTime: '2026-11-20T09:33:00', status: 'REGISTERED' },
+    { id: 7, userId: 7, activityId: 197, registrationTime: '2026-11-20T09:40:00', status: 'REGISTERED' },
+    { id: 8, userId: 7, activityId: 198, registrationTime: '2026-11-20T09:42:00', status: 'REGISTERED' },
+    { id: 9, userId: 8, activityId: 199, registrationTime: '2026-11-20T09:50:00', status: 'REGISTERED' },
+    { id: 10, userId: 8, activityId: 195, registrationTime: '2026-11-20T09:52:00', status: 'REGISTERED' },
+    { id: 11, userId: 9, activityId: 190, registrationTime: '2026-11-20T10:01:00', status: 'REGISTERED' },
+    { id: 12, userId: 9, activityId: 194, registrationTime: '2026-11-20T10:03:00', status: 'REGISTERED' },
+    { id: 13, userId: 10, activityId: 191, registrationTime: '2026-11-20T10:10:00', status: 'REGISTERED' },
+    { id: 14, userId: 10, activityId: 192, registrationTime: '2026-11-20T10:12:00', status: 'REGISTERED' },
+    { id: 15, userId: 11, activityId: 193, registrationTime: '2026-11-20T10:20:00', status: 'REGISTERED' },
+    { id: 16, userId: 11, activityId: 196, registrationTime: '2026-11-20T10:22:00', status: 'REGISTERED' },
+    { id: 17, userId: 12, activityId: 197, registrationTime: '2026-11-20T10:30:00', status: 'REGISTERED' },
+    { id: 18, userId: 12, activityId: 199, registrationTime: '2026-11-20T10:32:00', status: 'REGISTERED' },
+    { id: 19, userId: 13, activityId: 195, registrationTime: '2026-11-20T10:40:00', status: 'REGISTERED' },
+    { id: 20, userId: 13, activityId: 198, registrationTime: '2026-11-20T10:42:00', status: 'REGISTERED' },
+    { id: 21, userId: 14, activityId: 190, registrationTime: '2026-11-20T10:50:00', status: 'REGISTERED' },
+    { id: 22, userId: 14, activityId: 198, registrationTime: '2026-11-20T10:52:00', status: 'REGISTERED' },
+    { id: 23, userId: 15, activityId: 193, registrationTime: '2026-11-20T11:00:00', status: 'REGISTERED' },
+    { id: 24, userId: 15, activityId: 194, registrationTime: '2026-11-20T11:02:00', status: 'REGISTERED' }
   ]
 }
 

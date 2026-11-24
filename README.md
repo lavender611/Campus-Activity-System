@@ -12,17 +12,20 @@
 - `frontend`：Vue 3 + Vite + Element Plus
 - `database/campus_activity.sql`：建库、建表、演示账号和活动数据（含 2026 年 11 月学生社团系列活动 10 项）
 - `database/nov2026_club_activities.sql`：2026 年 11 月学生社团系列活动增量导入脚本（按标题判重，可重复执行，不删除已有数据）
+- `database/nov2026_student_signup.sql`：学生账号与报名增量脚本（12 位重补修名单学生，每人 2 项报名，按姓名/活动标题判重，可重复执行）
 
 ## 一、初始化数据库
 1. 打开 IDEA 的 Database 工具窗口，或 MySQL 命令行。
 2. 执行 `database/campus_activity.sql`。**注意：该脚本会删除并重建 `campus_activity` 数据库中的原有三张业务表，原有数据会丢失；如果要保留旧数据，请先备份。**
 3. 默认数据库名为 `campus_activity`。
 4. 若数据库已在使用、只想补充“2026 年 11 月学生社团系列活动”这 10 项，改执行 `database/nov2026_club_activities.sql` 即可：脚本会跳过同名活动，不影响已有的账号和报名记录。
+5. 若想再补上重补修名单的 12 个学生账号和他们的报名，执行 `database/nov2026_student_signup.sql`：用户名即姓名，密码统一 `123456`，每个学生报名 2 项活动。
 
 演示账号：
 - 学生：`student01` / `123456`
 - 学生测试账号：`student02` / `123456`（用于验证不同学生的报名数据隔离）
 - 管理员：`admin` / `123456`
+- 重补修名单学生（用户名=姓名，密码均为 `123456`）：段浩宇、胡雨生、吴钰琳、张战、韦涵烁、韩旭、余邵卿、赵齐文、王彤、邓翼枫、陈娜、杨珺涵
 
 ## 二、配置后端数据库密码
 打开 `backend/src/main/resources/application.properties`，将：
