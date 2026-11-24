@@ -8,80 +8,122 @@ const USERS = [
 ]
 
 function seedActivities() {
+  // 2026 年 11 月学生社团系列活动（共青团阜阳理工学院委员会 宣），与数据库 seed 保持一致
   return [
     {
-      id: 1,
-      title: '人工智能前沿讲座：大模型与智能体',
-      description: '邀请计算机学院老师讲解大模型基本原理、智能体应用与学习路线，现场设有提问环节，欢迎各专业同学参加。',
-      category: '学术讲座',
-      location: '图书馆报告厅',
-      startTime: '2026-11-25T14:00:00',
-      endTime: '2026-11-25T16:30:00',
-      capacity: 120
+      id: 190,
+      title: '“以纸寄初心·时光回信”书信征集',
+      description: '承办：思想政治教育研究会；QQ群号：1006359614。面向全校学生征集书信作品，写下初心与期许，优秀作品将在大学生活动中心展出。',
+      category: '文艺体育',
+      location: '大学生活动中心大礼堂前厅',
+      startTime: '2026-11-23T09:00:00',
+      endTime: '2026-11-23T17:00:00',
+      capacity: 100
     },
     {
-      id: 2,
-      title: '校园歌手大赛初赛',
-      description: '一年一度的校园歌手大赛开始报名，初赛采用清唱形式，每人 3 分钟，晋级选手进入决赛。',
+      id: 191,
+      title: '“写给未来的一封信”时光邮局',
+      description: '承办：西湖文学社；QQ群号：1132957914。把想对未来自己说的话写成信，由社团统一保管，并在约定时间寄出。',
       category: '文艺体育',
-      location: '大学生活动中心',
-      startTime: '2026-12-05T18:30:00',
-      endTime: '2026-12-05T21:00:00',
+      location: '大学生活动中心大礼堂前厅',
+      startTime: '2026-11-24T09:00:00',
+      endTime: '2026-11-25T17:00:00',
       capacity: 200
     },
     {
-      id: 3,
-      title: '图书馆图书整理志愿活动',
-      description: '协助图书馆完成新到图书上架与书架整理，服务时长可计入志愿时长，提供饮用水与志愿证明。',
+      id: 192,
+      title: '英聚阜理·青言汇英语趣味摊位',
+      description: '承办：外国语协会；QQ群号：1136239265。通过英语猜词、配音、口语闯关等摊位游戏练习英语表达，现场可领取小礼品。',
+      category: '学术讲座',
+      location: '大学生活动中心大礼堂前厅',
+      startTime: '2026-11-27T14:00:00',
+      endTime: '2026-11-27T17:00:00',
+      capacity: 80
+    },
+    {
+      id: 193,
+      title: '“晨光沐绿·绿色生活”卫生巡查',
+      description: '承办：绿笙环境保护协会；QQ群号：806463111。每周三早上 7:10 在教学楼区域开展卫生巡查与文明劝导，持续一学期。',
       category: '志愿服务',
-      location: '图书馆一楼大厅',
-      startTime: '2026-11-28T09:00:00',
-      endTime: '2026-11-28T11:30:00',
-      capacity: 30
+      location: '1-8号教学楼',
+      startTime: '2026-11-25T07:10:00',
+      endTime: '2027-01-13T07:10:00',
+      capacity: 60
     },
     {
-      id: 4,
-      title: '乡村振兴调研社会实践',
-      description: '走访周边乡镇，围绕特色农业与乡村文旅开展问卷调研与访谈，形成调研报告，往返统一安排车辆。',
-      category: '社会实践',
-      location: '阜阳市颍上县',
-      startTime: '2026-12-12T08:00:00',
-      endTime: '2026-12-13T18:00:00',
-      capacity: 20
+      id: 194,
+      title: '“绿色银行”环保兑换',
+      description: '承办：绿笙环境保护协会；QQ群号：1135943506。用可回收物兑换绿植和学习用品，倡导低碳校园生活。',
+      category: '志愿服务',
+      location: '大学生活动中心大礼堂前厅',
+      startTime: '2026-11-26T09:00:00',
+      endTime: '2026-11-27T17:00:00',
+      capacity: 100
     },
     {
-      id: 5,
-      title: '冬季校园迷你马拉松',
-      description: '5 公里校园环跑，全程设置补给点与医疗点，完赛发放纪念奖牌，建议提前做好热身准备。',
+      id: 195,
+      title: '“晨光启行·食安护航”晨跑花跑',
+      description: '承办：食安先锋社；QQ群号：1130571837。清晨集体晨跑，沿途宣传食品安全知识，完成打卡可获纪念徽章。',
       category: '文艺体育',
-      location: '学校田径场',
-      startTime: '2026-12-19T07:30:00',
-      endTime: '2026-12-19T09:30:00',
+      location: '风雨操场',
+      startTime: '2026-11-23T06:30:00',
+      endTime: '2026-12-01T07:30:00',
+      capacity: 80
+    },
+    {
+      id: 196,
+      title: '“赴朝曦”校园长跑竞赛',
+      description: '承办：跑步爱好者协会；QQ群号：240219215。校园长跑竞赛，按完赛成绩分组排名，设男女组奖项。',
+      category: '文艺体育',
+      location: '风雨操场',
+      startTime: '2026-11-29T09:00:00',
+      endTime: '2026-12-06T17:00:00',
       capacity: 150
     },
     {
-      id: 6,
-      title: 'Python 数据分析工作坊',
-      description: '从 Pandas 数据清洗到可视化输出，带着笔记本电脑即可上手，课程结束后提供练习数据与代码。',
+      id: 197,
+      title: '“急救进校园”应急救护培训',
+      description: '承办：大学生应急救护社团；QQ群号：1131948138。心肺复苏、AED 使用与创伤包扎培训，考核合格颁发急救员证书。',
+      category: '志愿服务',
+      location: '图书馆一楼报告厅',
+      startTime: '2026-11-29T14:00:00',
+      endTime: '2026-11-29T17:00:00',
+      capacity: 100
+    },
+    {
+      id: 198,
+      title: '“荚点妙想，‘豆’是惊喜”豆荚娃娃手工制作活动',
+      description: '承办：大学生创新创业协会；QQ群号：635044224。用豆荚、布料等材料制作娃娃，作品可参与创意市集展示。',
+      category: '文艺体育',
+      location: '4号教学楼109',
+      startTime: '2026-11-23T09:00:00',
+      endTime: '2026-11-29T17:00:00',
+      capacity: 60
+    },
+    {
+      id: 199,
+      title: '“小实验，大国重器”桌面实验',
+      description: '承办：电子爱好者协会；QQ群号：1134186713。现场演示电磁、光学等桌面小实验，并可动手组装简易装置。',
       category: '学术讲座',
-      location: '实验楼 B302',
-      startTime: '2026-12-02T19:00:00',
-      endTime: '2026-12-02T21:00:00',
-      capacity: 40
+      location: '一期食堂北侧操场',
+      startTime: '2026-11-22T09:00:00',
+      endTime: '2026-11-22T17:00:00',
+      capacity: 80
     }
   ]
 }
 
 function seedRegistrations() {
   return [
-    { id: 1, userId: 1, activityId: 1, registrationTime: '2026-11-18T10:22:00', status: 'REGISTERED' },
-    { id: 2, userId: 2, activityId: 2, registrationTime: '2026-11-19T15:41:00', status: 'REGISTERED' }
+    { id: 1, userId: 1, activityId: 190, registrationTime: '2026-11-18T10:22:00', status: 'REGISTERED' },
+    { id: 2, userId: 2, activityId: 191, registrationTime: '2026-11-19T15:41:00', status: 'REGISTERED' }
   ]
 }
 
 function seed() {
-  return { activities: seedActivities(), registrations: seedRegistrations(), seq: 100 }
+  return { activities: seedActivities(), registrations: seedRegistrations(), seq: 199 }
 }
+
 
 let data = null
 

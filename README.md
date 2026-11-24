@@ -10,12 +10,14 @@
 ## 项目结构
 - `backend`：Spring Boot 3.5.7 + MyBatis
 - `frontend`：Vue 3 + Vite + Element Plus
-- `database/campus_activity.sql`：建库、建表、演示账号和活动数据
+- `database/campus_activity.sql`：建库、建表、演示账号和活动数据（含 2026 年 11 月学生社团系列活动 10 项）
+- `database/nov2026_club_activities.sql`：2026 年 11 月学生社团系列活动增量导入脚本（按标题判重，可重复执行，不删除已有数据）
 
 ## 一、初始化数据库
 1. 打开 IDEA 的 Database 工具窗口，或 MySQL 命令行。
 2. 执行 `database/campus_activity.sql`。**注意：该脚本会删除并重建 `campus_activity` 数据库中的原有三张业务表，原有数据会丢失；如果要保留旧数据，请先备份。**
 3. 默认数据库名为 `campus_activity`。
+4. 若数据库已在使用、只想补充“2026 年 11 月学生社团系列活动”这 10 项，改执行 `database/nov2026_club_activities.sql` 即可：脚本会跳过同名活动，不影响已有的账号和报名记录。
 
 演示账号：
 - 学生：`student01` / `123456`
