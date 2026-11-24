@@ -1,0 +1,72 @@
+<status-bar userName="{{userName}}" demoMode="{{demoMode}}" />
+
+<view class="page">
+  <view class="card">
+    <view class="field">
+      <text class="field-label">活动名称</text>
+      <input value="{{form.title}}" data-field="title" bindinput="onInput" placeholder="例如：人工智能前沿讲座" placeholder-class="ph" />
+    </view>
+
+    <view class="field">
+      <text class="field-label">活动描述</text>
+      <textarea value="{{form.description}}" data-field="description" bindinput="onInput" placeholder="简要说明活动内容、流程与注意事项" placeholder-class="ph" maxlength="1000" />
+    </view>
+
+    <view class="field">
+      <text class="field-label">活动类别</text>
+      <picker mode="selector" range="{{categories}}" value="{{categoryIndex}}" bindchange="onCategory">
+        <view class="picker-value">{{form.category}}</view>
+      </picker>
+    </view>
+
+    <view class="field">
+      <text class="field-label">活动地点</text>
+      <input value="{{form.location}}" data-field="location" bindinput="onInput" placeholder="例如：图书馆报告厅" placeholder-class="ph" />
+    </view>
+
+    <view class="field">
+      <text class="field-label">开始时间</text>
+      <view class="picker-row">
+        <view class="picker-col">
+          <picker mode="date" value="{{form.startDate}}" start="2020-01-01" end="2035-12-31" bindchange="onStartDate">
+            <view class="picker-value">{{form.startDate}}</view>
+          </picker>
+        </view>
+        <view class="picker-col">
+          <picker mode="time" value="{{form.startTime}}" bindchange="onStartTime">
+            <view class="picker-value">{{form.startTime}}</view>
+          </picker>
+        </view>
+      </view>
+    </view>
+
+    <view class="field">
+      <text class="field-label">结束时间</text>
+      <view class="picker-row">
+        <view class="picker-col">
+          <picker mode="date" value="{{form.endDate}}" start="2020-01-01" end="2035-12-31" bindchange="onEndDate">
+            <view class="picker-value">{{form.endDate}}</view>
+          </picker>
+        </view>
+        <view class="picker-col">
+          <picker mode="time" value="{{form.endTime}}" bindchange="onEndTime">
+            <view class="picker-value">{{form.endTime}}</view>
+          </picker>
+        </view>
+      </view>
+    </view>
+
+    <view class="field">
+      <text class="field-label">报名名额</text>
+      <input value="{{form.capacity}}" data-field="capacity" type="number" bindinput="onInput" placeholder="例如：100" placeholder-class="ph" />
+      <view class="field-hint">名额为可报名人数上限，达到上限后学生无法再报名</view>
+    </view>
+
+    <view class="btn btn-primary btn-block {{loading ? 'btn-disabled' : ''}}" bindtap="save" hover-class="btn-hover">
+      {{loading ? '保存中…' : '保存'}}
+    </view>
+    <view class="btn btn-ghost btn-block" style="margin-top: 20rpx" bindtap="backToManage" hover-class="btn-hover">
+      返回管理列表
+    </view>
+  </view>
+</view>

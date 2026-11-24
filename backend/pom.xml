@@ -14,10 +14,6 @@
     </parent>
     <properties>
         <java.version>21</java.version>
-        <!-- 源码与资源统一 UTF-8，避免中文提示在 IDEA / 命令行编译后变成乱码 -->
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <maven.compiler.encoding>UTF-8</maven.compiler.encoding>
     </properties>
     <dependencies>
         <dependency>

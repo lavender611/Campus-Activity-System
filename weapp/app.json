@@ -1,0 +1,22 @@
+{
+  "pages": [
+    "pages/list/list",
+    "pages/login/login",
+    "pages/detail/detail",
+    "pages/mine/mine",
+    "pages/manage/manage",
+    "pages/publish/publish",
+    "pages/roster/roster",
+    "pages/me/me"
+  ],
+  "window": {
+    "navigationBarBackgroundColor": "#173b67",
+    "navigationBarTextStyle": "white",
+    "navigationBarTitleText": "校园活动报名",
+    "backgroundColor": "#f3f6fb",
+    "backgroundTextStyle": "dark"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json",
+  "lazyCodeLoading": "requiredComponents"
+}

@@ -5,8 +5,4 @@
         SELECT id, username, password, role, created_at AS createdAt
         FROM users WHERE username = #{username}
     </select>
-    <select id="findById" resultType="com.campus.entity.User">
-        SELECT id, username, password, role, created_at AS createdAt
-        FROM users WHERE id = #{id}
-    </select>
 </mapper>

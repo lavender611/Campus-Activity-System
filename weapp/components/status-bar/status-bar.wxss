@@ -1,0 +1,21 @@
+.status-bar {
+  display: flex;
+  align-items: center;
+  padding: 6rpx 28rpx 0;
+  font-size: 24rpx;
+  color: #7c8a9b;
+}
+
+.who {
+  margin-left: auto;
+}
+
+.demo-flag {
+  display: inline-block;
+  padding: 2rpx 14rpx;
+  border-radius: 999rpx;
+  background: #f0b95a;
+  color: #4a3006;
+  font-size: 23rpx;
+  font-weight: 600;
+}

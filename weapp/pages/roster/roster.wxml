@@ -1,0 +1,29 @@
+<status-bar userName="{{userName}}" demoMode="{{demoMode}}" />
+
+<view class="page">
+  <view class="row-between">
+    <text class="left">共 {{rows.length}} 条记录</text>
+    <view class="btn btn-ghost btn-sm" bindtap="load" hover-class="btn-hover">{{loading ? '加载中…' : '刷新'}}</view>
+  </view>
+
+  <view wx:if="{{loading && !rows.length}}" class="loading">
+    <view class="spinner"></view>
+    <text>正在加载…</text>
+  </view>
+
+  <view wx:elif="{{!rows.length}}" class="empty">
+    <text class="empty-icon">👥</text>
+    <text>该活动暂无报名记录</text>
+  </view>
+
+  <view wx:else class="card" style="padding: 8rpx 30rpx">
+    <view wx:for="{{rows}}" wx:key="id" class="roster-row">
+      <view class="avatar">{{item.initial}}</view>
+      <view class="who">
+        <view class="name">{{item.username}}</view>
+        <view class="time">用户ID {{item.userId}} · 报名于 {{item.regText}}</view>
+      </view>
+      <text class="tag {{item.statusClass}}">{{item.statusText}}</text>
+    </view>
+  </view>
+</view>

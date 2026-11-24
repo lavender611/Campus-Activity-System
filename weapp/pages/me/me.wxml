@@ -1,0 +1,71 @@
+<status-bar userName="{{userName}}" demoMode="{{demoMode}}" />
+
+<view class="page with-tabbar">
+  <view class="profile-card">
+    <view style="display: flex; align-items: center">
+      <view class="avatar-lg">{{initial}}</view>
+      <view>
+        <view class="name">{{userName || '未登录'}}</view>
+        <view class="role">{{roleText}}<text wx:if="{{userId}}"> · ID {{userId}}</text></view>
+      </view>
+    </view>
+  </view>
+
+  <view class="card" style="margin-top: 24rpx">
+    <view class="profile-row">
+      <text class="k">数据来源</text>
+      <view>
+        <text wx:if="{{demoMode}}" class="tag orange">演示数据</text>
+        <text wx:else class="tag green">后端接口</text>
+      </view>
+    </view>
+    <view class="profile-row">
+      <text class="k">登录状态</text>
+      <text>{{loggedIn ? '已登录' : '未登录'}}</text>
+    </view>
+    <view class="profile-row">
+      <text class="k">账号角色</text>
+      <text>{{roleText}}</text>
+    </view>
+  </view>
+
+  <view class="section-label">快捷入口</view>
+  <view class="card" style="padding: 8rpx 30rpx">
+    <view class="profile-row" bindtap="goList" hover-class="row-hover">
+      <text>浏览全部活动</text><text class="arrow">›</text>
+    </view>
+    <view wx:if="{{role === 'student'}}" class="profile-row" bindtap="goMine" hover-class="row-hover">
+      <text>我的报名记录</text><text class="arrow">›</text>
+    </view>
+    <view wx:if="{{role === 'admin'}}" class="profile-row" bindtap="goManage" hover-class="row-hover">
+      <text>活动管理与名单</text><text class="arrow">›</text>
+    </view>
+    <view wx:if="{{!loggedIn}}" class="profile-row" bindtap="goLogin" hover-class="row-hover">
+      <text>登录账号</text><text class="arrow">›</text>
+    </view>
+  </view>
+
+  <view class="section-label">演示设置</view>
+  <view class="card" style="padding: 8rpx 30rpx">
+    <view class="profile-row" bindtap="retryBackend" hover-class="row-hover">
+      <text>重新连接后端</text>
+      <text class="arrow">{{demoMode ? '当前用演示数据' : '连接正常'}}</text>
+    </view>
+    <view class="profile-row" bindtap="resetDemo" hover-class="row-hover">
+      <text>重置演示数据</text><text class="arrow">›</text>
+    </view>
+  </view>
+
+  <view wx:if="{{loggedIn}}" class="btn btn-danger btn-block" style="margin-top: 36rpx" bindtap="signOut" hover-class="btn-hover">
+    退出登录
+  </view>
+  <view wx:else class="btn btn-primary btn-block" style="margin-top: 36rpx" bindtap="goLogin" hover-class="btn-hover">
+    去登录
+  </view>
+
+  <view class="field-hint" style="text-align: center; margin-top: 28rpx">
+    演示提示：若连不上后端，将自动使用内置演示数据，所有操作只保存在本机。
+  </view>
+</view>
+
+<tabbar current="/pages/me/me" role="{{role}}" />

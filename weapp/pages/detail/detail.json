@@ -1,0 +1,6 @@
+{
+  "navigationBarTitleText": "活动详情",
+  "usingComponents": {
+    "status-bar": "/components/status-bar/status-bar"
+  }
+}

@@ -1,0 +1,58 @@
+<status-bar userName="{{userName}}" demoMode="{{demoMode}}" />
+
+<view class="page with-tabbar">
+  <block wx:if="{{role === 'admin'}}">
+    <view style="display: flex; margin: 4rpx 0 24rpx">
+      <view class="btn btn-primary btn-sm" style="flex: 1; margin-right: 16rpx" bindtap="publish" hover-class="btn-hover">＋ 发布活动</view>
+      <view class="btn btn-ghost btn-sm" bindtap="load" hover-class="btn-hover">{{loading ? '加载中…' : '刷新'}}</view>
+    </view>
+
+    <view wx:if="{{loading && !rows.length}}" class="loading">
+      <view class="spinner"></view>
+      <text>正在加载…</text>
+    </view>
+
+    <view wx:elif="{{!rows.length}}" class="empty">
+      <text class="empty-icon">📋</text>
+      <text>还没有活动，点击上方按钮发布</text>
+    </view>
+
+    <view wx:else>
+      <view wx:for="{{rows}}" wx:key="id" class="manage-card">
+        <view style="display: flex; align-items: flex-start">
+          <text class="mc-title">{{item.title}}</text>
+          <text class="tag">{{item.category}}</text>
+        </view>
+        <view class="meta-row">
+          <text class="meta-icon">📍</text>
+          <text class="meta-text">{{item.location}}</text>
+        </view>
+        <view class="meta-row">
+          <text class="meta-icon">🕒</text>
+          <text class="meta-text">{{item.startText}}</text>
+        </view>
+        <view class="seat" style="margin-top: 16rpx">
+          <view class="progress">
+            <view class="bar {{item.rate >= 100 ? 'full' : ''}}" style="width: {{item.rate}}%"></view>
+          </view>
+          <text class="seat-text">{{item.registeredCount}} / {{item.capacity}}</text>
+        </view>
+        <view class="actions">
+          <view class="btn btn-plain btn-sm" data-id="{{item.id}}" bindtap="edit" hover-class="btn-hover">编辑</view>
+          <view class="btn btn-ghost btn-sm" data-id="{{item.id}}" bindtap="roster" hover-class="btn-hover">报名名单</view>
+          <view class="btn btn-danger btn-sm" data-id="{{item.id}}" bindtap="remove" hover-class="btn-hover">删除</view>
+        </view>
+      </view>
+    </view>
+  </block>
+
+  <block wx:else>
+    <view class="empty">
+      <text class="empty-icon">🔒</text>
+      <text>活动管理仅管理员可用</text>
+      <view class="btn btn-primary btn-sm" style="margin: 28rpx auto 0; width: 260rpx" bindtap="goLogin" hover-class="btn-hover">用管理员账号登录</view>
+    </view>
+  </block>
+</view>
+
+<tabbar current="/pages/manage/manage" role="{{role}}" />

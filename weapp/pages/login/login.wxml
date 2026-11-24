@@ -1,0 +1,59 @@
+<status-bar userName="{{userName}}" demoMode="{{demoMode}}" />
+
+<view class="page">
+  <view class="login-brand">
+    <view class="logo">🎓</view>
+    <text class="login-title">校园活动报名</text>
+    <text class="login-sub">学生与管理员使用数据库账号登录</text>
+  </view>
+
+  <view class="card">
+    <view class="field">
+      <text class="field-label">账号</text>
+      <input
+        value="{{username}}"
+        placeholder="请输入账号"
+        placeholder-class="ph"
+        bindinput="onUsername"
+      />
+    </view>
+
+    <view class="field">
+      <text class="field-label">密码</text>
+      <input
+        value="{{password}}"
+        password
+        placeholder="请输入密码"
+        placeholder-class="ph"
+        bindinput="onPassword"
+        bindconfirm="submit"
+        confirm-type="done"
+      />
+    </view>
+
+    <view class="quick-fill">
+      <view
+        class="chip {{username === 'student01' ? 'active' : ''}}"
+        data-name="student01"
+        bindtap="fill"
+        hover-class="btn-hover"
+      >学生账号</view>
+      <view
+        class="chip {{username === 'admin' ? 'active' : ''}}"
+        data-name="admin"
+        bindtap="fill"
+        hover-class="btn-hover"
+      >管理员账号</view>
+    </view>
+
+    <view
+      class="btn btn-primary btn-block {{loading ? 'btn-disabled' : ''}}"
+      bindtap="submit"
+      hover-class="btn-hover"
+    >{{loading ? '登录中…' : '登录'}}</view>
+
+    <view class="field-hint" style="margin-top: 24rpx; text-align: center">
+      student01 / 123456（学生）；admin / 123456（管理员）
+    </view>
+  </view>
+</view>

@@ -1,0 +1,75 @@
+<status-bar userName="{{userName}}" demoMode="{{demoMode}}" />
+
+<view class="page with-tabbar">
+  <view class="search-box">
+    <text class="search-icon">🔍</text>
+    <input
+      value="{{keyword}}"
+      placeholder="搜索活动名称、地点"
+      placeholder-class="ph"
+      confirm-type="search"
+      bindinput="onKeyword"
+    />
+  </view>
+
+  <view class="chip-row" style="margin-top: 24rpx">
+    <view
+      wx:for="{{categories}}"
+      wx:key="*this"
+      class="chip {{category === item ? 'active' : ''}}"
+      data-cat="{{item}}"
+      bindtap="onCategory"
+      hover-class="btn-hover"
+    >{{item}}</view>
+  </view>
+
+  <view class="row-between">
+    <text class="left">共 {{items.length}} 个活动</text>
+    <view class="btn btn-ghost btn-sm" bindtap="load" hover-class="btn-hover">
+      {{loading ? '加载中…' : '刷新'}}
+    </view>
+  </view>
+
+  <view wx:if="{{loading && !items.length}}" class="loading">
+    <view class="spinner"></view>
+    <text>正在加载活动…</text>
+  </view>
+
+  <view wx:elif="{{!items.length}}" class="empty">
+    <text class="empty-icon">🗓</text>
+    <text>暂无符合条件的活动</text>
+  </view>
+
+  <view wx:else>
+    <view
+      wx:for="{{items}}"
+      wx:key="id"
+      class="activity-card"
+      data-id="{{item.id}}"
+      bindtap="openDetail"
+      hover-class="card-hover"
+    >
+      <view class="ac-top">
+        <text class="ac-title">{{item.title}}</text>
+        <text class="tag">{{item.category}}</text>
+      </view>
+      <view class="desc">{{item.description}}</view>
+      <view class="meta-row">
+        <text class="meta-icon">📍</text>
+        <text class="meta-text">{{item.location}}</text>
+      </view>
+      <view class="meta-row">
+        <text class="meta-icon">🕒</text>
+        <text class="meta-text">{{item.dateText}} {{item.timeText}} 开始</text>
+      </view>
+      <view class="seat">
+        <view class="progress">
+          <view class="bar {{item.full ? 'full' : ''}}" style="width: {{item.rate}}%"></view>
+        </view>
+        <text class="seat-text">{{item.registeredCount}} / {{item.capacity}} 人</text>
+      </view>
+    </view>
+  </view>
+</view>
+
+<tabbar current="/pages/list/list" role="{{role}}" />

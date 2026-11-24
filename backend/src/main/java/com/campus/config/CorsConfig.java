@@ -12,14 +12,10 @@ public class CorsConfig {
         return new WebMvcConfigurer() {
             @Override
             public void addCorsMappings(CorsRegistry registry) {
-                // 用 allowedOriginPatterns 而不是 allowedOrigins：
-                // 5173 被占用时 Vite 会自动改用 5174/5175，且用 127.0.0.1 打开页面时
-                // Origin 与 localhost 并不相同，写死单个地址会导致浏览器 CORS 报错。
                 registry.addMapping("/api/**")
-                        .allowedOriginPatterns("http://localhost:*", "http://127.0.0.1:*")
+                        .allowedOrigins("http://localhost:5173")
                         .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
-                        .allowedHeaders("*")
-                        .maxAge(3600);
+                        .allowedHeaders("*");
             }
         };
     }

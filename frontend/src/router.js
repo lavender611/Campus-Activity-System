@@ -16,19 +16,11 @@ const routes = [
   { path: '/mine', component: MyRegistrations, meta: { student: true } },
   { path: '/manage', component: ActivityManage, meta: { admin: true } },
   { path: '/publish', component: ActivityForm, meta: { admin: true } },
-  { path: '/roster/:id', component: SignupRoster, meta: { admin: true } },
-  // 兜底：地址写错时回到列表，而不是白屏
-  { path: '/:pathMatch(.*)*', redirect: '/list' }
+  { path: '/roster/:id', component: SignupRoster, meta: { admin: true } }
 ]
-
 const router = createRouter({ history: createWebHistory(), routes })
-
 router.beforeEach((to) => {
   if (to.meta.admin && state.role !== 'admin') return '/login'
-  if (to.meta.student && state.role !== 'student') {
-    return state.role === 'admin' ? '/manage' : '/login'
-  }
-  return true
+  if (to.meta.student && state.role !== 'student') return '/login'
 })
-
 export default router

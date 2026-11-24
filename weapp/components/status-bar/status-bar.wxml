@@ -1,0 +1,4 @@
+<view class="status-bar">
+  <text wx:if="{{demoMode}}" class="demo-flag">演示数据</text>
+  <text class="who">{{userName || '游客'}}</text>
+</view>

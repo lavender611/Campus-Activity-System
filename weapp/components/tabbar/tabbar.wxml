@@ -1,0 +1,15 @@
+<view class="tabbar">
+  <view class="tabbar-inner">
+    <view
+      wx:for="{{tabs}}"
+      wx:key="path"
+      class="tab-item {{current === item.path ? 'active' : ''}}"
+      data-path="{{item.path}}"
+      bindtap="onTap"
+      hover-class="tab-hover"
+    >
+      <text class="tab-icon">{{item.icon}}</text>
+      <text class="tab-label">{{item.label}}</text>
+    </view>
+  </view>
+</view>

@@ -1,0 +1,57 @@
+<status-bar userName="{{userName}}" demoMode="{{demoMode}}" />
+
+<view class="page with-tabbar">
+  <view class="row-between">
+    <text class="left">共 {{rows.length}} 条报名记录</text>
+    <view class="btn btn-ghost btn-sm" bindtap="load" hover-class="btn-hover">
+      {{loading ? '加载中…' : '刷新'}}
+    </view>
+  </view>
+
+  <view wx:if="{{loading && !rows.length}}" class="loading">
+    <view class="spinner"></view>
+    <text>正在加载…</text>
+  </view>
+
+  <view wx:elif="{{!rows.length}}" class="empty">
+    <text class="empty-icon">🎟</text>
+    <text wx:if="{{role === 'student'}}">暂无报名记录</text>
+    <text wx:else>请先以学生身份登录后查看</text>
+    <view wx:if="{{role === 'student'}}" class="btn btn-ghost btn-sm" style="margin: 28rpx auto 0" bindtap="goList" hover-class="btn-hover">去看看活动</view>
+    <view wx:else class="btn btn-primary btn-sm" style="margin: 28rpx auto 0" bindtap="goLogin" hover-class="btn-hover">去登录</view>
+  </view>
+
+  <view wx:else>
+    <view wx:for="{{rows}}" wx:key="id" class="activity-card">
+      <view class="ac-top">
+        <text class="ac-title">{{item.activityTitle}}</text>
+        <text class="tag {{item.statusClass}}">{{item.statusText}}</text>
+      </view>
+      <view class="meta-row">
+        <text class="meta-icon">📍</text>
+        <text class="meta-text">{{item.activityLocation}}</text>
+      </view>
+      <view class="meta-row">
+        <text class="meta-icon">🕒</text>
+        <text class="meta-text">活动开始：{{item.startText}}</text>
+      </view>
+      <view class="meta-row">
+        <text class="meta-icon">✍️</text>
+        <text class="meta-text">报名时间：{{item.regText}}</text>
+      </view>
+      <view style="display: flex; margin-top: 22rpx">
+        <view class="btn btn-plain btn-sm" style="flex: 1; margin-right: 16rpx" data-id="{{item.activityId}}" bindtap="openDetail" hover-class="btn-hover">查看详情</view>
+        <view
+          wx:if="{{item.canCancel}}"
+          class="btn btn-danger btn-sm"
+          style="flex: 1"
+          data-activity="{{item.activityId}}"
+          bindtap="cancel"
+          hover-class="btn-hover"
+        >取消报名</view>
+      </view>
+    </view>
+  </view>
+</view>
+
+<tabbar current="/pages/mine/mine" role="{{role}}" />
